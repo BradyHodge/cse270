@@ -1,32 +1,28 @@
 import pytest
 import requests
-import responses
 
 @pytest.fixture
-def mock_api():
-    """Fixture to set up the mock API responses"""
-    with responses.RequestsMock() as rsps:
-        # Mock the unauthorized response
-        rsps.add(
-            responses.GET, 
-            "http://127.0.0.1:8000/users",
-            body="",
-            status=401,
-            match=[responses.matchers.query_param_matcher({"username": "admin", "password": "admin"})]
-        )
-        
-        # Mock the authorized response
-        rsps.add(
-            responses.GET, 
-            "http://127.0.0.1:8000/users",
-            body="",
-            status=200,
-            match=[responses.matchers.query_param_matcher({"username": "admin", "password": "qwerty"})]
-        )
-        
-        yield rsps
+def mock_server(requests_mock):
+    """
+    Set up mock responses for the server.
+    """
+    # Mock the unauthorized response
+    requests_mock.get(
+        "http://127.0.0.1:8000/users?username=admin&password=admin", 
+        text="", 
+        status_code=401
+    )
+    
+    # Mock the authorized response
+    requests_mock.get(
+        "http://127.0.0.1:8000/users?username=admin&password=qwerty", 
+        text="", 
+        status_code=200
+    )
+    
+    return requests_mock
 
-def test_unauthorized_access(mock_api):
+def test_unauthorized_access(mock_server):
     """
     Test that accessing /users endpoint with invalid credentials returns 401 Unauthorized.
     """
@@ -46,7 +42,7 @@ def test_unauthorized_access(mock_api):
     # Assert the response body is empty
     assert response.text == ""
 
-def test_authorized_access(mock_api):
+def test_authorized_access(mock_server):
     """
     Test that accessing /users endpoint with valid credentials returns 200 OK.
     """
