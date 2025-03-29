@@ -10,6 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
+from time import sleep
 
 class TestW12smoketest():
   def setup_method(self, method):
@@ -38,6 +39,7 @@ class TestW12smoketest():
     self.driver.find_element(By.LINK_TEXT, "Join Us!").click()
     elements = self.driver.find_elements(By.CSS_SELECTOR, ".join-wizard-main")
     assert len(elements) > 0
+    sleep(1)
     self.driver.find_element(By.LINK_TEXT, "Directory").click()
     element = self.driver.find_element(By.LINK_TEXT, "Directory")
     actions = ActionChains(self.driver)
