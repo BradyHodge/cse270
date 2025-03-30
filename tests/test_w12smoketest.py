@@ -39,12 +39,6 @@ class TestW12smoketest():
     elements = self.driver.find_elements(By.CSS_SELECTOR, ".join-wizard-main")
     assert len(elements) > 0
     self.driver.find_element(By.LINK_TEXT, "Directory").click()
-    element = self.driver.find_element(By.LINK_TEXT, "Directory")
-    actions = ActionChains(self.driver)
-    actions.move_to_element(element).perform()
-    element = self.driver.find_element(By.CSS_SELECTOR, "body")
-    actions = ActionChains(self.driver)
-    actions.move_to_element(element, 0, 0).perform()
     self.driver.find_element(By.ID, "directory-grid").click()
     assert self.driver.find_element(By.CSS_SELECTOR, ".gold-member:nth-child(9) > p:nth-child(2)").text == "Teton Turf and Tree"
     self.driver.find_element(By.ID, "directory-list").click()
