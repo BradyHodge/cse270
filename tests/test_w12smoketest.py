@@ -55,8 +55,7 @@ class TestW12smoketest():
     self.driver.find_element(By.NAME, "biztitle").click()
     self.driver.find_element(By.NAME, "biztitle").send_keys("CEO")
     self.driver.find_element(By.NAME, "submit").click()
-    elements = self.driver.find_elements(By.NAME, "email")
-    assert len(elements) > 0
+    WebDriverWait(self.driver, 30).until(expected_conditions.presence_of_element_located((By.NAME, "email")))
     self.driver.find_element(By.LINK_TEXT, "Admin").click()
     elements = self.driver.find_elements(By.ID, "username")
     assert len(elements) > 0
